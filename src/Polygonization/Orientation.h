@@ -30,7 +30,7 @@ void orient(Mesh& mesh, const std::vector<Triple_intersection>& vertices) {
 	}
 
 	// Construct polygons to be oriented
-	Mesh::Property_map<Face, std::vector<int>> vertex_indices = mesh.property_map<Face, std::vector<int>>("f:vertices").first;
+	Mesh::Property_map<Face, std::vector<int>> vertex_indices = mesh.property_map<Face, std::vector<int>>("f:vertices").value();
 	std::vector<std::vector<int>> polygons;
 	for (auto f : mesh.faces()) {
 		// Retrieve vertex indices

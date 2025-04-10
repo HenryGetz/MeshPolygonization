@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------------------
-#      Copyright (C) 2015 by Liangliang Nan (liangliang.nan@gmail.com)
+#      Copyright (C) 2015 by Liangliang Nan 
+#      (liangliang.nan@gmail.com)
 #      https://3d.bk.tudelft.nl/liangliang/
 #
 #      This file is part of Easy3D. If it is useful in your research/work,
@@ -23,16 +24,15 @@
 #      along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 
-
 # ------------------------------------------------------------------------------
-# This file sets up CGAL for CMake. When CGAL was setup successfuly, CGAL_FOUND
+# This file sets up CGAL for CMake. When CGAL was set up successfully, CGAL_FOUND
 # will be set.
 #
-# To use CGAL, you only need to add the following line in you CMakeLists file
+# To use CGAL, you only need to add the following line in your CMakeLists file:
 #           include( ../../cmake/UseCGAL.cmake )
+#
 # NOTE: this must be done after add_executable() or add_library()
 # ------------------------------------------------------------------------------
-
 
 #---------------------------------------------------------------------------------------------
 # CGAL
@@ -46,15 +46,17 @@ if(CGAL_FOUND)
     message(STATUS "Found CGAL-${CGAL_MAJOR_VERSION}.${CGAL_MINOR_VERSION}.${CGAL_BUGFIX_VERSION}")
 
     message(STATUS "   CGAL_USE_FILE: ${CGAL_USE_FILE}")
-    include(${CGAL_USE_FILE})
+    if(NOT "${CGAL_USE_FILE}" STREQUAL "")
+        include(${CGAL_USE_FILE})
+    else()
+        message(STATUS "CGAL_USE_FILE is not set. Skipping include.")
+    endif()
 
     message(STATUS "   CGAL_LIBRARIES: ${CGAL_LIBRARIES}")
     message(STATUS "   CGAL_3RD_PARTY_LIBRARIES: ${CGAL_3RD_PARTY_LIBRARIES}")
 
-#   The recommended way to specify libraries and headers with CMake is to use the
-#   target_link_libraries command. This command automatically adds appropriate
-#   include directories, compile definitions, the position-independent-code lags.
-    target_link_libraries(${PROJECT_NAME} ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES})
+    # Link CGAL and its third-party libraries using the keyword signature.
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES})
 
 else()
     message(FATAL_ERROR "CGAL was not found.")
@@ -72,10 +74,7 @@ if(GMP_FOUND)
     message(STATUS "   GMP_INCLUDE_DIR: ${GMP_INCLUDE_DIR}")
     message(STATUS "   GMP_LIBRARIES: ${GMP_LIBRARIES}")
 
-#   The recommended way to specify libraries and headers with CMake is to use the
-#   target_link_libraries command. This command automatically adds appropriate
-#   include directories, compile definitions, the position-independent-code lags.
-    target_link_libraries(${PROJECT_NAME} ${GMP_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${GMP_LIBRARIES})
 else()
     message(FATAL_ERROR "GMP was not found.")
 endif()
@@ -92,10 +91,7 @@ if(MPFR_FOUND)
     message(STATUS "   MPFR_INCLUDE_DIR: ${MPFR_INCLUDE_DIR}")
     message(STATUS "   MPFR_LIBRARIES: ${MPFR_LIBRARIES}")
 
-#   The recommended way to specify libraries and headers with CMake is to use the
-#   target_link_libraries command. This command automatically adds appropriate
-#   include directories, compile definitions, the position-independent-code flags.
-    target_link_libraries(${PROJECT_NAME} ${MPFR_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${MPFR_LIBRARIES})
 else()
     message(FATAL_ERROR "MPFR was not found.")
 endif()

@@ -78,8 +78,8 @@ inline std::vector<Triple_intersection> compute_triple_intersections(const Graph
 				auto intersection = CGAL::intersection(curr_plane, adj_plane, other_plane);
 
 				// Handle intersection
-				if (intersection != boost::none) {
-					if (const Point_3* pt = boost::get<Point_3>(&(*intersection))) {
+				if (intersection) {
+					if (const Point_3* pt = std::get_if<Point_3>(&*intersection)) {
 						// Construct triple intersection
 						Triple_intersection intersection;
 
@@ -116,8 +116,8 @@ inline Segment_3 clip_line(const Line_3* line, const Bbox_3* bbox) {
 		auto intersection = CGAL::intersection(*line, plane);
 
 		// Handle intersection
-		if (intersection != boost::none) {
-			if (const Point_3* pt = boost::get<Point_3>(&(*intersection))) {
+		if (intersection) {
+			if (const Point_3* pt = std::get_if<Point_3>(&*intersection)) {
 				if (is_in_bbox(bbox, pt)) { points.push_back(*pt); }
 			}
 		}
@@ -155,8 +155,8 @@ inline std::vector<Plane_intersection> compute_intersections(const Bbox_3* bbox,
 		auto intersection = CGAL::intersection(curr_plane, adj_plane);
 
 		// Handle intersection
-		if (intersection != boost::none) {
-			if (const Line_3* line = boost::get<Line_3>(&(*intersection))) {
+		if (intersection) {
+			if (const Line_3* line = std::get_if<Line_3>(&*intersection)) {
 				// Clip line with bbox
 				Segment_3 segment = clip_line(line, bbox);
 

@@ -191,8 +191,8 @@ inline std::pair<std::size_t, double> compute_confidence(Polygon_2* polygon, std
 						auto intersection = CGAL::intersection(*ep, *ef);
 
 						// Handle intersection
-						if (intersection != boost::none) {
-							if (const Point_2* pt = boost::get<Point_2>(&(*intersection))) {
+						if (intersection) {
+							if (const Point_2* pt = std::get_if<Point_2>(&*intersection)) {
 								// Store with existent points
 								points.push_back(*pt);
 							}

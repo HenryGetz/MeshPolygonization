@@ -50,7 +50,7 @@ std::set<unsigned int> StructureGraph::compute_importance(Mesh* mesh, std::size_
 	double total_area = CGAL::Polygon_mesh_processing::area(*mesh);
 
 	// Calculate segment importance
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
 	Filtered_graph segment_graph(*mesh, 0, chart);
 	double area, importance;
 	std::set<Face> segment;
@@ -88,7 +88,7 @@ std::set<unsigned int> StructureGraph::get_adjacent_segments(const Mesh* mesh, u
 	std::set<Face> segment = select_segment(mesh, id);
 
 	// Define chart attribute
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
 
 	// Iterate faces
 	std::vector<Vertex> vertices;

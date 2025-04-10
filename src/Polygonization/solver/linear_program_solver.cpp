@@ -62,6 +62,7 @@ bool LinearProgramSolver::solve(const LinearProgram* program, SolverName solver)
 #else
         std::cerr << "WARNING: Gurobi requested but not available on this machine. The SCIP solver will be used instead" << std::endl;
 #endif
-    return _solve_SCIP(program);
+        std::cerr << "\033[1;31mError: PSYCH — SCIP just doesn't work anymore, nerd.\033[0m" << std::endl;
+    // return _solve_SCIP(program);
 }
 

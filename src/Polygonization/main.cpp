@@ -30,15 +30,42 @@
 #include <CGAL/Polygon_mesh_processing/IO/polygon_mesh_io.h>
 
 
+// int main(int argc, char *argv[]) {
+// 	srand(time(NULL));
+
+//     std::string input_file = std::string(POLYGONIZATION_ROOT_DIR) + "/../data/arc.off";
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 
-    std::string input_file = std::string(POLYGONIZATION_ROOT_DIR) + "/../data/arc.off";
-    std::cout << "input model: " << input_file << std::endl;
-    if (argc == 2)
-        input_file = argv[1];
+    std::string input_file;
 
-	// Read mesh
+    // Handle help message
+    if (argc > 1) {
+        std::string arg1(argv[1]);
+        if (arg1 == "-h" || arg1 == "--help") {
+            std::cout << "MeshPolygonization: Structure-aware Building Mesh Simplification" << std::endl;
+            std::cout << "Usage:" << std::endl;
+            std::cout << "  " << argv[0] << " [input_model.off]" << std::endl << std::endl;
+            std::cout << "Arguments:" << std::endl;
+            std::cout << "  input_model.off     Path to a 3D mesh in OFF format to polygonize." << std::endl;
+            std::cout << "                      If omitted, defaults to: ../data/arc.off" << std::endl;
+            std::cout << std::endl;
+            std::cout << "Example:" << std::endl;
+            std::cout << "  " << argv[0] << " /path/to/your_model.off" << std::endl;
+            return EXIT_SUCCESS;
+        }
+    }
+
+    // Get input file from CLI or fallback
+    if (argc >= 2) {
+        input_file = argv[1];
+    } else {
+        input_file = std::string(POLYGONIZATION_ROOT_DIR) + "/../data/arc.off";
+    }
+
+    std::cout << "Input model: " << input_file << std::endl;
+
+    // Read mesh
 	Mesh mesh;
     if (CGAL::Polygon_mesh_processing::IO::read_polygon_mesh(input_file, mesh) == false) {
 	    std::cerr << "Failed to load input model from file \'" << input_file << "\'." << std::endl;

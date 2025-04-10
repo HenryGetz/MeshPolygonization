@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
 #include "linear_program_solver.h"
-#include "scip/scip.h"
+
 #include "scip/scipdefplugins.h"
 
 #include <iostream>

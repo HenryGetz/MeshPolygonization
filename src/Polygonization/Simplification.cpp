@@ -314,7 +314,7 @@ void Simplification::refine_edges(std::vector<Plane_intersection>* edges, std::v
 					// Compute intersection
 					auto intersection = CGAL::intersection(seg_i.supporting_line(), plane_j);
 
-					if (const Point_3* pt = boost::get<Point_3>(&(*intersection))) {
+					if (const Point_3* pt = std::get_if<Point_3>(&*intersection)) {
 						// Create triple intersection
 						Triple_intersection vertex;
 						vertex.point = *pt;

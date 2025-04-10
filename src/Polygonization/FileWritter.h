@@ -87,7 +87,7 @@ inline void writeMesh(const Mesh* mesh, std::string file) {
 
 	// Vertex properties
 	VProp_geom geom = mesh->points();
-	VProp_double v_planar = mesh-> property_map<Vertex, double>("v:planarity").first;
+	VProp_double v_planar = mesh-> property_map<Vertex, double>("v:planarity").value();
 
 	for (auto v : mesh->vertices()) {
 		Point_3 point = geom[v];
@@ -98,10 +98,10 @@ inline void writeMesh(const Mesh* mesh, std::string file) {
 	}
 
 	// Face properties
-	FProp_double f_planar = mesh->property_map<Face, double>("f:planarity").first;
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
-	FProp_double imp = mesh->property_map<Face, double>("f:imp").first;
-	FProp_color color = mesh->property_map<Face, Point_3>("f:color").first;
+	FProp_double f_planar = mesh->property_map<Face, double>("f:planarity").value();
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
+	FProp_double imp = mesh->property_map<Face, double>("f:imp").value();
+	FProp_color color = mesh->property_map<Face, Point_3>("f:color").value();
 
 	std::vector<Vertex> vertices;
 	for (auto f : mesh->faces()) {

@@ -23,16 +23,16 @@
 inline std::vector<double> optimize(Mesh* mesh, std::vector<Plane_intersection>* edges, LinearProgramSolver::SolverName solver_name) {
 	// Face attributes //
 	// Face index
-	Mesh::Property_map<Face, std::size_t> face_indices = mesh->property_map<Face, std::size_t>("f:index").first;
+	Mesh::Property_map<Face, std::size_t> face_indices = mesh->property_map<Face, std::size_t>("f:index").value();
 
 	// Number of supporting faces
-	Mesh::Property_map<Face, std::size_t> supporting_face_num = mesh->property_map<Face, std::size_t>("f:supporting_face_num").first;
+	Mesh::Property_map<Face, std::size_t> supporting_face_num = mesh->property_map<Face, std::size_t>("f:supporting_face_num").value();
 
 	// Covered area
-	Mesh::Property_map<Face, double> covered_area = mesh->property_map<Face, double>("f:covered_area").first;
+	Mesh::Property_map<Face, double> covered_area = mesh->property_map<Face, double>("f:covered_area").value();
 
 	// Total area
-	Mesh::Property_map<Face, double> area = mesh->property_map<Face, double>("f:area").first;
+	Mesh::Property_map<Face, double> area = mesh->property_map<Face, double>("f:area").value();
 
 	// Linear program coefficients
 	double wt_fitting = 0.43;

@@ -1,3 +1,24 @@
+# Henry's Special Instructions
+
+```
+cd ~/MeshPolygonization
+rm -rf src/cmake-build-debug
+mkdir -p src/cmake-build-debug && cd src/cmake-build-debug
+
+cmake -G Ninja \
+      -DCMAKE_BUILD_TYPE=Debug \
+      -DCMAKE_PREFIX_PATH=$CGAL_DIR \
+      -DCMAKE_C_COMPILER=/opt/homebrew/opt/llvm/bin/clang \
+      -DCMAKE_CXX_COMPILER=/opt/homebrew/opt/llvm/bin/clang++ \
+      -DCMAKE_THREAD_LIBS_INIT="-lpthread" \
+      -DTHREADS_PREFER_PTHREAD_FLAG=ON \
+      -DCMAKE_EXE_LINKER_FLAGS="-L/opt/homebrew/opt/llvm/lib" \
+      ..
+ninja
+```
+
+---
+
 This is a step by step "How To" for those who have no experience with C/C++ programming to build the software.
 
 NOTE: There are usually many options to set up a development environment on each operating system. What proposed here is not the only option, but I try to minimize your effort. Besides, you may skip some of the steps if they have been properly set up already.

@@ -23,7 +23,7 @@
 inline std::set<Face> select_segment(const Mesh* mesh, unsigned int id) {
 	std::set<Face> segment;
 
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
 	for (auto face : mesh->faces()) {
 		if (chart[face] == id) { segment.insert(face); }
 	}
@@ -34,8 +34,8 @@ inline std::set<Face> select_segment(const Mesh* mesh, unsigned int id) {
 
 // Retrieve segment color
 inline Point_3 get_segment_color(const Mesh* mesh, unsigned int id) {
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
-	FProp_color color = mesh->property_map<Face, Point_3>("f:color").first;
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
+	FProp_color color = mesh->property_map<Face, Point_3>("f:color").value();
 	for (auto face : mesh->faces()) {
 		if (chart[face] == id) { return color[face]; }
 	}
@@ -49,7 +49,7 @@ inline Vector_3 compute_segment_orientation(const Mesh* mesh, unsigned int id) {
 	// Select segment by id
 	std::set<Face> segment = select_segment(mesh, id);
 
-	FProp_double planarity = mesh->property_map<Face, double>("f:planarity").first;
+	FProp_double planarity = mesh->property_map<Face, double>("f:planarity").value();
 	auto max_face = std::max_element(segment.begin(), segment.end(),
 		                             [&](const Face &a, const Face &b)
 	                                 {return planarity[a] < planarity[b]; });
@@ -110,7 +110,7 @@ inline std::vector<Point_3> get_interior_points(const Mesh* mesh, unsigned int i
 
 	// Retrieve points
 	std::vector<Face> neighbors;
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
 	VProp_geom geom = mesh->points();
 	for (auto vertex : vertices) {
 		bool is_in = true;
@@ -140,7 +140,7 @@ inline std::vector<Segment_3> get_segment_border(const Mesh* mesh, unsigned int 
 	std::set<Face> segment = select_segment(mesh, id);
 
 	// Chart property
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
 	VProp_geom geom = mesh->points();
 
 	// Iterate segment faces

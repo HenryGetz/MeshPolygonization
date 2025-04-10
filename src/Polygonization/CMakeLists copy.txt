@@ -1,0 +1,79 @@
+cmake_minimum_required(VERSION 3.1)
+
+# Use the name of the current source directory as the project name.
+get_filename_component(PROJECT_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+project(${PROJECT_NAME})
+
+# List header and source files.
+set(${PROJECT_NAME}_HEADERS
+    CandidateFace.h
+    CGALTypes.h
+    Intersection.h
+    Optimization.h
+    Orientation.h
+    Planarity.h
+    PlanarSegmentation.h
+    Segment.h
+    Simplification.h
+    StructureGraph.h
+    Utils.h
+    solver/linear_program.h
+    solver/linear_program_solver.h
+)
+
+set(${PROJECT_NAME}_SOURCES
+    main.cpp
+    Planarity.cpp
+    PlanarSegmentation.cpp
+    Simplification.cpp
+    StructureGraph.cpp
+    solver/linear_program.cpp
+    solver/linear_program_solver.cpp
+    solver/linear_program_solver_GUROBI.cpp
+)
+
+# Create the executable.
+add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES} ${${PROJECT_NAME}_HEADERS})
+
+# Include the rply directory.
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${POLYGONIZATION_rply_DIR}
+)
+
+# Link third-party libraries (soplex and rply) using the keyword signature.
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    3rd_soplex
+    3rd_rply
+)
+
+# Define the resources directory.
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    "POLYGONIZATION_ROOT_DIR=\"${POLYGONIZATION_ROOT}\""
+)
+
+# Find and set up GUROBI if available.
+include(./cmake/FindGUROBI.cmake)
+if (GUROBI_FOUND)
+    message(STATUS "Gurobi include dir: ${GUROBI_INCLUDE_DIRS}")
+    message(STATUS "Gurobi libraries: ${GUROBI_LIBRARIES}")
+
+    target_compile_definitions(${PROJECT_NAME} PUBLIC HAS_GUROBI)
+    target_include_directories(${PROJECT_NAME} PRIVATE ${GUROBI_INCLUDE_DIRS})
+    
+    # Link the GUROBI libraries using the modern signature.
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${GUROBI_LIBRARIES})
+    
+    # Also find and link the Gurobi C++ API.
+    find_library(GUROBI_CXX_LIBRARY
+        NAMES gurobi_c++
+        PATHS ${GUROBI_LIBRARY_DIR}    # This should be set inside your FindGUROBI.cmake.
+    )
+    if (GUROBI_CXX_LIBRARY)
+        target_link_libraries(${PROJECT_NAME} PRIVATE ${GUROBI_CXX_LIBRARY})
+    else()
+        message(FATAL_ERROR "Could not find Gurobi C++ library (gurobi_c++)")
+    endif()
+endif()
+
+# Include CGAL setup (using your external cmake module).
+include(./cmake/UseCGAL.cmake)

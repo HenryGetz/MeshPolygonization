@@ -131,7 +131,7 @@ std::size_t PlanarSegmentation::apply(Mesh* mesh, double dist_thres, unsigned in
 
 // Locate face with highest planarity
 Face PlanarSegmentation::get_max_planarity_face(const Mesh* mesh, std::set<Face>* faces) {
-	FProp_double planarity = mesh->property_map<Face, double>("f:planarity").first;
+	FProp_double planarity = mesh->property_map<Face, double>("f:planarity").value();
 	auto max_face = std::max_element(faces->begin(), faces->end(),
 					[&](const Face &a, const Face &b)
 					{return planarity[a] < planarity[b]; });
@@ -182,8 +182,8 @@ bool PlanarSegmentation::check_fitting(Mesh* mesh, std::set<Face>* segment, Plan
 // Merge segments
 int PlanarSegmentation::merge_segments(Mesh* mesh, std::size_t seg_number, std::set<Face>* seg_1, std::set<Face>* seg_2) {
 	// Retrieve all face properties
-	FProp_int chart = mesh->property_map<Face, int>("f:chart").first;
-	FProp_color color = mesh->property_map<Face, Point_3>("f:color").first;
+	FProp_int chart = mesh->property_map<Face, int>("f:chart").value();
+	FProp_color color = mesh->property_map<Face, Point_3>("f:color").value();
 
 	// Introduce new segment
 	int new_id = int(seg_number);
